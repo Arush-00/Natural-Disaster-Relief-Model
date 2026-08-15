@@ -1,0 +1,142 @@
+:not(:defined) > * { display: none; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #d9dde1;
+}
+
+/*
+   EASIEST WAY TO USE YOUR OWN BACKGROUND:
+   Put an image called background.jpg in this same folder.
+   It will automatically appear behind the 3D model.
+*/
+#scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("background.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #d9dde1;
+}
+
+model-viewer {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --poster-color: transparent;
+}
+
+/* Background chooser */
+.controls {
+  position: absolute;
+  z-index: 10;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(20, 20, 20, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+#backgroundPicker { display: none; }
+
+.background-button,
+#resetBackground {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.background-button:hover,
+#resetBackground:hover { background: #ededed; }
+
+/* Loading bar */
+.progress-bar {
+  display: block;
+  width: 33%;
+  height: 10%;
+  max-height: 2%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  border-radius: 25px;
+  box-shadow: 0 3px 10px 3px rgba(0,0,0,.5), 0 0 5px 1px rgba(0,0,0,.6);
+  border: 1px solid rgba(255,255,255,.9);
+  background-color: rgba(0,0,0,.5);
+}
+
+.progress-bar.hide {
+  visibility: hidden;
+  transition: visibility .3s;
+}
+
+.update-bar {
+  background-color: rgba(255,255,255,.9);
+  width: 0%;
+  height: 100%;
+  border-radius: 25px;
+  float: left;
+  transition: width .3s;
+}
+
+/* AR button */
+#ar-button {
+  background-image: url(ar_icon.png);
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-position: 12px 50%;
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  bottom: 16px;
+  padding: 0 16px 0 40px;
+  font-size: 14px;
+  color: #4285f4;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 18px;
+  border: 1px solid #dadce0;
+}
+
+#ar-button:active { background-color: #e8eaed; }
+#ar-button:focus { outline: none; }
+#ar-button:focus-visible { outline: 1px solid #4285f4; }
+
+@keyframes circle {
+  from { transform: translateX(-50%) rotate(0deg) translateX(50px) rotate(0deg); }
+  to { transform: translateX(-50%) rotate(360deg) translateX(50px) rotate(-360deg); }
+}
+
+@keyframes elongate {
+  from { transform: translateX(100px); }
+  to { transform: translateX(-100px); }
+}
+
+model-viewer > #ar-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  animation: elongate 2s infinite ease-in-out alternate;
+  display: none;
+}
+
+model-viewer[ar-status="session-started"] > #ar-prompt { display: block; }
+model-viewer > #ar-prompt > img { animation: circle 4s linear infinite; }
